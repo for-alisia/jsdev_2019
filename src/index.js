@@ -17,6 +17,13 @@
    isAllTrue([100, 2, 3, 4, 5], n => n < 10) // вернет false
  */
 function isAllTrue(array, fn) {
+    var result = true;
+
+    for (let i = 0; i < array.length; i++) {
+        fn(array[i]) ? result : result = false; 
+    }
+
+    return result;
 }
 
 /*
@@ -36,6 +43,13 @@ function isAllTrue(array, fn) {
    isSomeTrue([1, 2, 3, 4, 5], n => n > 20) // вернет false
  */
 function isSomeTrue(array, fn) {
+    var result = false;
+
+    for (let i = 0; i < array.length; i++) {
+        fn(array[i]) ? result = true : result;
+    }
+
+    return result;
 }
 
 /*
@@ -49,7 +63,14 @@ function isSomeTrue(array, fn) {
  3.3: Необходимо выбрасывать исключение в случаях:
    - fn не является функцией (с текстом "fn is not a function")
  */
-function returnBadArguments(fn) {
+function returnBadArguments(fn, ...params) {
+    let badArray = [];
+
+    for (let i = 0; i < params.length; i++) {
+        fn(params[i]);
+    }
+
+    return badArray;
 }
 
 /*
@@ -69,7 +90,47 @@ function returnBadArguments(fn) {
    - number не является числом (с текстом "number is not a number")
    - какой-либо из аргументов div является нулем (с текстом "division by 0")
  */
-function calculator() {
+function calculator(number = 0) {
+    var obj = {
+        sum: function(...params) {
+            var summa = number;
+
+            for (let i = 0; i < params.length; i++) {
+                summa += params[i];
+            }
+
+            return summa;
+        },
+        dif: function(...params) {
+            var diff = number;
+
+            for (let i = 0; i < params.length; i++) {
+                diff -= params[i];
+            }
+
+            return diff;
+        },
+        div: function(...params) {
+            var divv = number;
+
+            for (let i = 0; i < params.length; i++) {
+                divv = divv/params[i];
+            }
+
+            return divv;
+        },
+        mul: function(...params) {
+            var mull = number;
+
+            for (let i = 0; i < params.length; i++) {
+                mull = mull*params[i];
+            }
+
+            return mull;
+        }
+    };
+
+    return obj;
 }
 
 /* При решении задач, пострайтесь использовать отладчик */
