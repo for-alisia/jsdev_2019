@@ -18,6 +18,12 @@
  */
 function isAllTrue(array, fn) {
     var result = true;
+    
+    if (!array.length || !(array instanceof Array)) {
+        throw new Error('empty array');
+    } else if (typeof fn !== 'function') {
+        throw new Error('fn is not a function');
+    } 
 
     for (let i = 0; i < array.length; i++) {
         fn(array[i]) ? result : result = false; 
@@ -45,6 +51,12 @@ function isAllTrue(array, fn) {
 function isSomeTrue(array, fn) {
     var result = false;
 
+    if (!array.length || !(array instanceof Array)) {
+        throw new Error('empty array');
+    } else if (typeof fn !== 'function') {
+        throw new Error('fn is not a function');
+    } 
+
     for (let i = 0; i < array.length; i++) {
         fn(array[i]) ? result = true : result;
     }
@@ -66,8 +78,16 @@ function isSomeTrue(array, fn) {
 function returnBadArguments(fn, ...params) {
     let badArray = [];
 
+    if (typeof fn !== 'function') {
+        throw new Error('fn is not a function');
+    }
+
     for (let i = 0; i < params.length; i++) {
-        fn(params[i]);
+        try {
+            fn(params[i]);
+        } catch (e) {
+            badArray.push(params[i]);
+        }  
     }
 
     return badArray;
@@ -114,6 +134,10 @@ function calculator(number = 0) {
             var divv = number;
 
             for (let i = 0; i < params.length; i++) {
+                if (params[i] == 0) {
+                    throw new Error('division by 0');
+                }
+
                 divv = divv/params[i];
             }
 
@@ -129,6 +153,10 @@ function calculator(number = 0) {
             return mull;
         }
     };
+
+    if (isNaN(number)) {
+        throw new Error('number is not a number');
+    }
 
     return obj;
 }
