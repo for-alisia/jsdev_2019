@@ -35,11 +35,12 @@ function map(array, fn) {
  Посмотрите как работает reduce и повторите это поведение для массива, который будет передан в параметре array
  */
 function reduce(array, fn, initial) {
-    var prev = initial;
+    var prev = initial ? initial : array[0];
+    var index = initial ? 0 : 1;
    
-    for (var i = 0; i < array.length; i++) {
+    for (var i = index; i < array.length; i++) {
         
-        (typeof prev == 'undefined') ? prev = array[i] : prev = fn(prev, array[i], i, array);
+        prev = fn(prev, array[i], i, array);
     
     }
 
@@ -111,7 +112,7 @@ function createProxy(obj) {
                    
                 return true;
             }
-             
+
             return false;
         } 
     });
