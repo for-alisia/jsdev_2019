@@ -35,8 +35,15 @@ function map(array, fn) {
  Посмотрите как работает reduce и повторите это поведение для массива, который будет передан в параметре array
  */
 function reduce(array, fn, initial) {
-    var prev = initial ? initial : array[0];
-    var index = initial ? 0 : 1;
+    var prev, index;
+
+    if (typeof initial == 'undefined') {
+        prev = array[0];
+        index = 1;
+    } else {
+        prev = initial;
+        index = 0;
+    }
    
     for (var i = index; i < array.length; i++) {
         
