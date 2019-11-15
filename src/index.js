@@ -45,10 +45,8 @@ function reduce(array, fn, initial) {
         index = 0;
     }
    
-    for (var i = index; i < array.length; i++) {
-        
-        prev = fn(prev, array[i], i, array);
-    
+    for (var i = index; i < array.length; i++) {        
+        prev = fn(prev, array[i], i, array);    
     }
 
     return prev;
@@ -66,7 +64,7 @@ function upperProps(obj) {
     var array = [];
 
     for (const prop in obj) {
-        if (prop) {
+        if (obj.hasOwnProperty(prop)) {
             array.push(prop.toUpperCase());
         }
     }
@@ -89,13 +87,16 @@ function slice(array, from, to) {
     
     if (typeof from == 'undefined') {
         from = 0;
-    }    
+    } 
+
     if (to < 0) {
         to = array.length + to;
-    }    
+    } 
+
     if (from < 0) {
         from = array.length + from;
-    }    
+    } 
+       
     for (let i = 0; i < array.length; i++) {
         if (i >= from && i < to) {
             newArray.push(array[i]);
