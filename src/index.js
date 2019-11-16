@@ -17,8 +17,7 @@
    isAllTrue([100, 2, 3, 4, 5], n => n < 10) // вернет false
  */
 function isAllTrue(array, fn) {
-    var result = true;
-    
+        
     if (!array.length || !(array instanceof Array)) {
         throw new Error('empty array');
     } else if (typeof fn !== 'function') {
@@ -26,10 +25,12 @@ function isAllTrue(array, fn) {
     } 
 
     for (let i = 0; i < array.length; i++) {
-        fn(array[i]) ? result : result = false; 
+        if (!fn(array[i])) {
+            return false;
+        }
     }
 
-    return result;
+    return true;
 }
 
 /*
@@ -58,10 +59,12 @@ function isSomeTrue(array, fn) {
     } 
 
     for (let i = 0; i < array.length; i++) {
-        fn(array[i]) ? result = true : result;
+        if(fn(array[i])) {
+            return true;
+        } ;
     }
 
-    return result;
+    return false;
 }
 
 /*
