@@ -12,7 +12,9 @@
  */
 function createDivWithText(text) {
     let newDiv = document.createElement('div');
+
     newDiv.appendChild(document.createTextNode(text));
+
     return newDiv;
 }
 
@@ -48,11 +50,11 @@ function prepend(what, where) {
    findAllPSiblings(document.body) // функция должна вернуть массив с элементами div и span т.к. следующим соседом этих элементов является элемент с тегом P
  */
 function findAllPSiblings(where) {
-    let res = [];
-    let children = where.children;
+    let res = [],
+        children = where.children;
 
     for (let i = 0; i < children.length - 1; i++) {
-        if(children[i].nextElementSibling.tagName == 'P') {
+        if (children[i].nextElementSibling.tagName == 'P') {
             res.push(children[i]);
         }
     }
@@ -124,14 +126,15 @@ function deleteTextNodes(where) {
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
 function deleteTextNodesRecursive(where) {
-   if ( where.hasChildNodes() ) {
-       let children = where.childNodes;
-       for (let i = children.length - 1; i >= 0; i--) {
-           deleteTextNodesRecursive(children[i]);
-       }
-   } else if (where.nodeType == '3') {
-       where.remove();
-   }
+    if ( where.hasChildNodes() ) {
+        let children = where.childNodes;
+
+        for (let i = children.length - 1; i >= 0; i--) {
+            deleteTextNodesRecursive(children[i]);
+        }
+    } else if (where.nodeType == '3') {
+        where.remove();
+    }
 }
 
 /*
@@ -160,32 +163,43 @@ function collectDOMStat(root) {
         classes: {},
         texts: 0
     };
+
+    if (root.hasChildNodes()) {
+        let children = root.childNodes;
+
+        for (let child of children) {
+            researcher(child);
+        }
+    }
       
     function researcher(node) {
         if (node.tagName) {
             let tag = node.tagName;
+
             rootStat.tags[tag] ? rootStat.tags[tag]++ : rootStat.tags[tag] = 1;
         }
         
-        if(node.nodeType == '3') {
+        if (node.nodeType == '3') {
             rootStat.texts++
         }
         
         if (node.classList) {
             for (let nodeClass of node.classList) {
                 let classes = rootStat.classes;
+
                 classes[nodeClass] ? classes[nodeClass]++ : classes[nodeClass] = 1;
             }
         }
         
         if (node.hasChildNodes()) {
             let children = node.childNodes;
+
             for (let child of children) {
                 researcher(child);
             }
         }
     }
-    researcher(root);
+    
     return rootStat;
 }
 
@@ -226,18 +240,21 @@ function observeChildNodes(where, fn) {
         childList: true,
         subtree: true
     };
+
     const observer = new MutationObserver(observeChange);
+
     function observeChange(mutationList) {
         let changeNodes = {};
+
         for (let mutation of mutationList) {
             if (mutation.type == 'childList') {
-               if (mutation.addedNodes.length > 0) {
-                   changeNodes.type = 'insert';
-                   changeNodes.nodes = [...mutation.addedNodes];
-               } else if (mutation.removedNodes.length > 0) {
-                changeNodes.type = 'remove';
-                changeNodes.nodes = [...mutation.removedNodes];
-               }                
+                if (mutation.addedNodes.length > 0) {
+                    changeNodes.type = 'insert';
+                    changeNodes.nodes = [...mutation.addedNodes];
+                } else if (mutation.removedNodes.length > 0) {
+                    changeNodes.type = 'remove';
+                    changeNodes.nodes = [...mutation.removedNodes];
+                }                
             }
         }
         fn(changeNodes);
