@@ -57,7 +57,7 @@ function createDiv() {
    addListeners(newDiv);
  */
 function addListeners(target) {
-    target.addEventListener('dragstart', function(e) {
+    target.addEventListener('dragstart', function() {
         target.style.opacity = '0.5';
     });
     target.addEventListener('dragend', function(e) {
