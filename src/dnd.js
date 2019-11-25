@@ -43,6 +43,7 @@ function createDiv() {
     newDiv.style.height = heightRandom + 'px';
     newDiv.style.top = top + 'px';
     newDiv.style.left = left + 'px';
+    newDiv.setAttribute('draggable', 'true');
         
     return newDiv;
 }
