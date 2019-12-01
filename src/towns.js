@@ -113,8 +113,10 @@ const filterInput = homeworkContainer.querySelector('#filter-input');
 /* Блок с результатами поиска */
 const filterResult = homeworkContainer.querySelector('#filter-result');
 
+const towns = loadTowns();
+
 document.addEventListener('DOMContentLoaded', () => {
-    loadTowns()
+    towns
         .then(() => onLoadSuccess())
         .catch(() => onLoadError());
 });
@@ -131,7 +133,7 @@ filterInput.addEventListener('keyup', function() {
         return false;
     }
 
-    loadTowns().then(cities => {
+    towns.then(cities => {
         const matchArray = [];
         const fragment = document.createDocumentFragment();
 
