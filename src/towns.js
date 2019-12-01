@@ -42,27 +42,29 @@ function loadTowns() {
             'https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json'
         )
             .then(response => response.json())
-            .then(cities => {
-                loadingBlock.hidden = true;
-                filterBlock.hidden = false;
-
-                return resolve(sortCities(cities));
-            })
-            .catch(() => onLoadError());
+            .then(cities => resolve(sortCities(cities)));
     });
 }
-function sortCities(city) {
-    city.sort((prev, current) => {
-        if (prev.name < current.name) {
+function sortCities(cities) {
+    cities.sort((a, b) => {
+        const firstName = a.name.toLowerCase();
+        const secondName = b.name.toLowerCase();
+
+        if (firstName < secondName) {
             return -1;
-        } else if (prev.name > current.name) {
+        } else if (firstName > secondName) {
             return 1;
         }
 
         return 0;
     });
 
-    return city;
+    return cities;
+}
+
+function onLoadSuccess() {
+    loadingBlock.hidden = true;
+    filterBlock.style.display = 'block';
 }
 
 function onLoadError() {
@@ -111,17 +113,21 @@ const filterInput = homeworkContainer.querySelector('#filter-input');
 /* Блок с результатами поиска */
 const filterResult = homeworkContainer.querySelector('#filter-result');
 
+document.addEventListener('DOMContentLoaded', () => {
+    loadTowns()
+        .then(() => onLoadSuccess())
+        .catch(() => onLoadError());
+});
+
 filterInput.addEventListener('keyup', function() {
     // это обработчик нажатия кливиш в текстовом поле
-    const inputVal = filterInput.value;
+    const inputVal = filterInput.value.trim();
+    const currentList = filterResult.querySelectorAll('li');
 
+    for (let item of currentList) {
+        item.remove();
+    }
     if (inputVal === '') {
-        const currentList = filterResult.querySelectorAll('li');
-
-        for (let item of currentList) {
-            item.remove();
-        }
-
         return false;
     }
 
